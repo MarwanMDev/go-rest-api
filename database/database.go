@@ -32,5 +32,5 @@ func CloseMongoDB() {
 }
 
 func GetCollection(name string) *mongo.Collection {
-	return (*mongo.Collection)(MongoClient.Database("test_go").Collection("users"))
+	return MongoClient.Database("test_go").Collection(name)
 }
