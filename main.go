@@ -1,16 +1,15 @@
 package main
 
 import (
-	"context"
+	"os"
 
 	"github.com/MarwanMDev/go-rest-api/database"
-	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 func main() {
-	app := fiber.New()
+	// app := fiber.New()
+	app := generateApp()
 	// initialize app
 	err := initializeApp()
 	if err != nil {
@@ -19,19 +18,22 @@ func main() {
 
 	defer database.CloseMongoDB()
 
-	app.Post("/", func(c *fiber.Ctx) error {
-		sampleDoc := bson.M{"name": "Sample Todo"}
-		collection := database.GetCollection("todos")
+	// app.Post("/", func(c *fiber.Ctx) error {
+	// 	sampleDoc := bson.M{"name": "Sample Todo"}
+	// 	collection := database.GetCollection("todos")
 
-		nDoc, err := collection.InsertOne(context.TODO(), sampleDoc)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
-		}
+	// 	nDoc, err := collection.InsertOne(context.TODO(), sampleDoc)
+	// 	if err != nil {
+	// 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	// 	}
 
-		return c.JSON(nDoc)
-	})
+	// 	return c.JSON(nDoc)
+	// })
 
-	app.Listen(":3000")
+	// Get port from environment variable
+	port := os.Getenv("PORT")
+
+	app.Listen(":" + port)
 }
 
 func initializeApp() error {
